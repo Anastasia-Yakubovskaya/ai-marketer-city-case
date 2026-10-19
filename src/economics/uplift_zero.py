@@ -16,6 +16,7 @@ from src.economics import economics as econ
 
 def run(cfg: dict, seed: int = 42, n: int = 20000) -> pd.DataFrame:
     local = dict(cfg)
+    # Обнуляем только uplift: остальные неопределённости остаются такими же, как в базовой модели.
     local["delta"] = [0.0, 0.0, 0.0]
 
     rng = np.random.default_rng(seed)
@@ -30,6 +31,7 @@ def run(cfg: dict, seed: int = 42, n: int = 20000) -> pd.DataFrame:
         monthly = capacity + benefit["errors_avoided"]
         gross_pilot = costs[:, :6].sum(axis=1)
         early_benefit = (monthly[:, None] * ramp[None, :6]).sum(axis=1)
+        # Stop в M6 ограничивает downside стоимостью пилота за вычетом уже полученного эффекта.
         loss_if_stopped = gross_pilot - early_benefit
         payback = econ.payback_month(benefit, costs, ramp, scenario)
         npv24 = econ.npv_at_horizon(

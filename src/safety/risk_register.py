@@ -14,6 +14,7 @@ def compute_fmea(df: pd.DataFrame) -> pd.DataFrame:
     x = df.copy()
     for c in ("severity", "occurrence", "detectability", "occurrence_after", "detectability_after"):
         if not x[c].between(1, 10).all(): raise ValueError(f"{c} must be within 1..10")
+    # RPN используем только для приоритизации: это экспертный скоринг, а не вероятность инцидента.
     x["rpn_before"] = x.severity * x.occurrence * x.detectability
     x["rpn_after"] = x.severity * x.occurrence_after * x.detectability_after
     x["reduction_x"] = (x.rpn_before / x.rpn_after).round(1)

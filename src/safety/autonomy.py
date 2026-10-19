@@ -179,6 +179,7 @@ def build_sprt_demotion(cfg: dict) -> pd.DataFrame:
     if not (0 < alpha < 1 and 0 < beta < 1):
         raise ValueError("SPRT alpha and beta must be in (0, 1)")
 
+    # SPRT нужен для быстрого понижения тира при деградации, а не для доказательства качества с нуля.
     A = math.log(beta / (1.0 - alpha))
     B = math.log((1.0 - beta) / alpha)
 

@@ -23,6 +23,7 @@ def raw_rates(
 
 
 def required_judge_recall(raw: dict, coverage: dict, target: float):
+    # Judge получает только остаточный риск: классы, которые надёжно закрывает код, сначала вычитаются.
     residual_other = sum(
         raw[key] * (1 - coverage[key])
         for key in raw

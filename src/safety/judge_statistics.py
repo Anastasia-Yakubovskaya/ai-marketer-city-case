@@ -28,6 +28,7 @@ def zero_failure_upper_bound(n: int, confidence_level: float = 0.95) -> float:
     if not 0 < confidence_level < 1:
         raise ValueError("confidence_level must be in (0, 1)")
     alpha = 1.0 - confidence_level
+    # При нуле промахов всё равно используем консервативную верхнюю границу, а не оценку 0%.
     return 1.0 - alpha ** (1.0 / n)
 
 
@@ -44,6 +45,7 @@ def cluster_adjusted_requirement(n_independent: int, cluster_size: int, icc: flo
         raise ValueError("cluster_size must be >= 1")
     if not 0 <= icc < 1:
         raise ValueError("icc must be in [0, 1)")
+    # Корреляция внутри шаблона уменьшает эффективное число независимых наблюдений.
     design_effect = 1.0 + (cluster_size - 1) * icc
     return {
         "n_assuming_independence": n_independent,

@@ -34,6 +34,7 @@ def reconcile(cfg: dict) -> pd.DataFrame:
     team_fte = float(cfg["team_fte"])
     fte_cost = float(cfg["fte_cost_m_rub_per_month"])
     reported_team_cost = float(cfg["reported_team_cost_m_rub_per_month"])
+    # Несостыковки исходного кейса не исправляем молча: фиксируем обе версии рядом.
     calculated_team_cost = team_fte * fte_cost
 
     rows.append({
@@ -53,6 +54,7 @@ def reconcile(cfg: dict) -> pd.DataFrame:
     })
 
 
+    # Простая сумма шагов — диагностическая проверка; process_model отдельно допускает параллельность.
     step_days = cfg["case_step_days"]
     lower = sum(float(v[0]) for v in step_days.values())
     mode = sum(float(v[1]) for v in step_days.values())

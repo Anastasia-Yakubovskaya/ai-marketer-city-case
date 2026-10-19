@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def var_y(p: float, c: float) -> float:
+    # Нормируем средний чек к 1: тогда c управляет только вариативностью GMV, а не его масштабом.
     return p * (c**2 + 1 - p)
 
 
@@ -38,6 +39,7 @@ def n_noninferiority(
 
 
 def economic_delta_power(g: dict, delta_break_even: float = 0.046) -> pd.DataFrame:
+    # Это диагностика достижимости экономического порога, а не отдельный M6-гейт.
     p_control = float(g["baseline_conversion"])
     p_human = float(g["human_conversion"])
     effect_human = p_human - p_control

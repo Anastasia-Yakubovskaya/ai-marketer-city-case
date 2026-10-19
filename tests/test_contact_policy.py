@@ -14,6 +14,7 @@ def test_central_arbiter_never_violates_caps():
     mod=load_module('src/safety/contact_policy.py','cp1')
     df,ret=mod.simulate_central_arbiter(np.random.default_rng(1),5000,8.0,0.4,0.1,
         {'low':0.0,'mode':1.0,'high':3.0},4,1)
+    # Центральный арбитр должен соблюдать оба hard-cap независимо от нагрузки.
     assert df.sent_count.max() <= 4
     assert df.sms_count.max() <= 1
     assert not df.any_violation.any()
@@ -24,6 +25,7 @@ def test_local_violations_increase_with_pressure():
     mod=load_module('src/safety/contact_policy.py','cp2')
     low=mod.simulate_local_checks(np.random.default_rng(2),50000,1.0,0.15,0.08,4,1)
     high=mod.simulate_local_checks(np.random.default_rng(3),50000,5.0,0.15,0.08,4,1)
+    # Без общего арбитра рост давления кампаний должен увеличивать число конфликтов политики.
     assert high.any_violation.mean() > low.any_violation.mean()
 
 

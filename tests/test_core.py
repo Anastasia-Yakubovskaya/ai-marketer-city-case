@@ -1,13 +1,48 @@
-import importlib.util,pandas as pd,yaml
-def load(path,name):
-    s=importlib.util.spec_from_file_location(name,path); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); return m
+import importlib.util
+
+import pandas as pd
+import yaml
+
+
+def load(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_process():
-    m=load('src/process/process_model.py','pm'); c=yaml.safe_load(open('config/assumptions.yaml'))['process_model']; o=m.simulate_process(c,42); x=o[o.metric=='time_to_launch'].set_index('scenario'); assert x.loc['to_be','p50']<x.loc['as_is','p50']
+    module = load("src/process/process_model.py", "pm")
+    config = yaml.safe_load(open("config/assumptions.yaml"))["process_model"]
+    output = module.simulate_process(config, 42)
+    launch = output[output.metric == "time_to_launch"].set_index("scenario")
+    assert launch.loc["to_be", "p50"] < launch.loc["as_is", "p50"]
+
+
 def test_portfolio():
-    m=load('src/economics/portfolio.py','po'); cfg=yaml.safe_load(open('config/assumptions.yaml'))['portfolio']
-    d=pd.DataFrame([['G','x','push','repeat','good',5,5,5,5,1],['B','x','mixed','new','bad',2,1,1,1,5]],columns=['campaign_id','service','channel','offer_class','description','value','repeatability','data_readiness','automation_readiness','risk'])
-    r=m.score_portfolio(d,cfg).sort_values('priority_score',ascending=False) if 'priority_score' in m.score_portfolio(d,cfg).columns else m.score_portfolio(d,cfg)
-    assert r.iloc[0].campaign_id=='G'
+    module = load("src/economics/portfolio.py", "po")
+    config = yaml.safe_load(open("config/assumptions.yaml"))["portfolio"]
+    data = pd.DataFrame(
+        [
+            ["G", "x", "push", "repeat", "good", 5, 5, 5, 5, 1],
+            ["B", "x", "mixed", "new", "bad", 2, 1, 1, 1, 5],
+        ],
+        columns=[
+            "campaign_id", "service", "channel", "offer_class", "description",
+            "value", "repeatability", "data_readiness", "automation_readiness", "risk",
+        ],
+    )
+    scored = module.score_portfolio(data, config)
+    if "priority_score" in scored.columns:
+        scored = scored.sort_values("priority_score", ascending=False)
+    assert scored.iloc[0].campaign_id == "G"
+
+
 def test_error_budget():
-    m=load('src/safety/error_budget.py','eb'); cfg=yaml.safe_load(open('config/assumptions.yaml'))['error_budget']
-    d=pd.DataFrame([{'severity':'critical','exposed_contacts':100}]); r=m.evaluate(d,cfg); assert r['action']=='STOP_AND_DEMOTE'
+    module = load("src/safety/error_budget.py", "eb")
+    config = yaml.safe_load(open("config/assumptions.yaml"))["error_budget"]
+    incidents = pd.DataFrame([{"severity": "critical", "exposed_contacts": 100}])
+
+    # Критический инцидент должен останавливать контур независимо от накопленного месячного burn rate.
+    result = module.evaluate(incidents, config)
+    assert result["action"] == "STOP_AND_DEMOTE"

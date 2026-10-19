@@ -38,6 +38,7 @@ def two_proportion_sample_size(p_control: float, p_treatment: float,
 
 
 def cuped_adjusted_sample_size(n_per_arm: int, rho_squared: float) -> int:
+    # Для планирования используем стандартное приближение: CUPED уменьшает дисперсию в (1 - rho²) раз.
     if not 0 <= rho_squared < 1:
         raise ValueError("rho_squared must be in [0, 1)")
     return ceil(n_per_arm * (1.0 - rho_squared))
@@ -94,6 +95,7 @@ def noninferiority_sample_size(p_human: float, p_ai: float, margin_absolute: flo
     distance = (p_ai - p_human) + margin_absolute
     if distance <= 0:
         raise ValueError("expected effect does not lie inside the non-inferiority region")
+    # В non-inferiority нужен односторонний alpha: проверяем только ухудшение сверх согласованного допуска.
     z_alpha = norm.ppf(1 - alpha_one_sided)
     z_beta = norm.ppf(power)
     variance = p_human * (1 - p_human) + p_ai * (1 - p_ai)

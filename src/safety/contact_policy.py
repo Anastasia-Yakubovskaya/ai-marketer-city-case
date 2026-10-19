@@ -52,6 +52,7 @@ def simulate_local_checks(rng, n_clients, weekly_pressure, sms_share, optout_sha
 
 
 def _select_for_one_client(values, is_sms, message_cap, sms_cap):
+    # При конфликте за лимит сохраняем сообщения с большей ожидаемой ценностью.
     order = np.argsort(values)[::-1]
     selected = []
     total_used = 0
@@ -105,6 +106,7 @@ def simulate_central_arbiter(rng, n_clients, weekly_pressure, sms_share, optout_
     optout_violation = opted_out & (sent_count > 0)
     any_violation = total_violation | sms_violation | optout_violation
 
+    # Потерю ценности считаем только по клиентам, которых вообще разрешено контактировать.
     feasible_candidate_value = candidate_value[~opted_out].sum()
     value_retention = (selected_value.sum() / feasible_candidate_value
                        if feasible_candidate_value > 0 else 1.0)

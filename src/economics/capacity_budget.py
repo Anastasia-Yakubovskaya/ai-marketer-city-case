@@ -26,6 +26,7 @@ def capacity_bridge(cf: dict, cb: dict) -> pd.DataFrame:
             }
         )
 
+    # 120 × 2 часа — сценарное допущение; отдельно держим его от role-based оценки capacity.
     review_fte = (
         cf["campaigns_per_month"]
         * cb["review_hours_per_campaign"]
@@ -51,6 +52,7 @@ def budget_check(cf: dict, ab: dict) -> pd.DataFrame:
     for clients_m in ab["reachable_clients_options_m"]:
         contacts = clients_m * 1e6 * cf["messages_per_week"] * weeks_per_month
         push_cost = contacts * cf["push_cost_rub"] / 1e6
+        # Здесь проверяем физический потолок push-бюджета, а не прогноз фактического channel mix.
         share = push_cost / cf["communication_budget_m_rub_per_month"]
         rows.append(
             {

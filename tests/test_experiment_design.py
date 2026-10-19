@@ -16,6 +16,7 @@ def test_sample_size_for_5_to_6_percent_is_about_8k_per_arm():
 
 def test_cuped_reduces_required_sample():
     mod = load_module("src/experiments/experiment_design.py", "exp2")
+    # При rho²=0.30 ожидаем примерно 30% снижения требуемой выборки.
     assert mod.cuped_adjusted_sample_size(8100, 0.30) == 5670
 
 
@@ -30,4 +31,5 @@ def test_noninferiority_margin_smaller_means_more_sample():
     mod = load_module("src/experiments/experiment_design.py", "exp4")
     n1 = mod.noninferiority_sample_size(0.06, 0.06, 0.003)
     n2 = mod.noninferiority_sample_size(0.06, 0.06, 0.006)
+    # Чем строже допустимое ухудшение, тем больше данных нужно для non-inferiority.
     assert n1 > n2
