@@ -1,0 +1,2 @@
+test,h0_acceptable_error_rate_p0,h1_bad_error_rate_p1,alpha_false_demotion,beta_missed_bad_rate,lower_boundary_A,upper_boundary_B,log_increment_if_error,log_increment_if_ok,decision_rule
+sprt_demotion,0.01,0.05,0.05,0.1,-2.251291798606495,2.8903717578961645,1.6094379124341003,-0.041242958534049134,"accumulate log-likelihood ratio; if LLR >= B, lower the Green tier; if LLR <= A, continue; otherwise keep monitoring"

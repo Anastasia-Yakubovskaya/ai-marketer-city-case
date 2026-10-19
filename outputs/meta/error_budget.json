@@ -1,0 +1,13 @@
+{
+  "script": "error_budget.py",
+  "timestamp": "2026-10-19T11:12:06.827326",
+  "config_hash": "d262b9f142e64d48",
+  "normalizer_contacts": 10000,
+  "scenarios": 8,
+  "weeks": 4,
+  "live_feed_present": false,
+  "tables_written": [
+    "error_budget_scenarios.csv",
+    "error_budget_trajectory.csv"
+  ]
+}

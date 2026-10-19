@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Approval Card · AI Marketer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --bg-hover: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent-yellow: #ffdd2d;
+            --accent-green: #00d084;
+            --accent-red: #ff4757;
+            --accent-blue: #3b82f6;
+            --accent-orange: #ffa502;
+            --border-color: #2a2a2a;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 680px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+            padding: 28px 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-content h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .header-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .badge {
+            background: var(--accent-yellow);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .content {
+            padding: 32px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .metric-box {
+            background: var(--bg-hover);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .metric-box:hover {
+            border-color: var(--accent-yellow);
+            transform: translateY(-2px);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-value.positive {
+            color: var(--accent-green);
+        }
+
+        .metric-value.warning {
+            color: var(--accent-orange);
+        }
+
+        .checks-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .checks-list {
+            list-style: none;
+        }
+
+        .checks-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .checks-list li:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .risk-box {
+            background: rgba(255, 165, 2, 0.1);
+            border-left: 4px solid var(--accent-orange);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 28px;
+        }
+
+        .risk-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--accent-orange);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .risk-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-approve {
+            background: var(--accent-yellow);
+            color: #000;
+        }
+
+        .btn-approve:hover {
+            background: #ffe44d;
+        }
+
+        .btn-edit {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-edit:hover {
+            background: #303030;
+        }
+
+        .btn-reject {
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .btn-reject:hover {
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .modal p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .modal textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .modal textarea:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .modal-btn-primary {
+            background: var(--accent-yellow);
+            color: #000;
+        }
+
+        .modal-btn-secondary {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Success State */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 60px 32px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-state.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .success-state h3 {
+            font-size: 24px;
+            color: var(--accent-green);
+            margin-bottom: 12px;
+        }
+
+        .success-state p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .audit-info {
+            background: var(--bg-hover);
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+        .audit-info strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="mainCard">
+        <div class="header">
+            <div class="header-content">
+                <h2>Повторная покупка: Доставка</h2>
+                <p>Push-кампания · Сервис X · Tier: Green Limited</p>
+            </div>
+            <span class="badge">Template</span>
+        </div>
+
+        <div class="content" id="cardContent">
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label">Аудитория</div>
+                    <div class="metric-value">180,000</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Прогноз Uplift</div>
+                    <div class="metric-value positive">+0.9 п.п.</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Ожидаемый iROAS</div>
+                    <div class="metric-value">1.6</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Канарейка</div>
+                    <div class="metric-value warning">3% (5,400)</div>
+                </div>
+            </div>
+
+            <div class="checks-section">
+                <div class="section-title">Автоматические проверки</div>
+                <ul class="checks-list">
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Оффер сверен с каталогом (код)
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Контактная политика не нарушена (Арбитр)
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Бюджет в рамках месячного лимита
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        Судья (LLM): Критических ошибок нет
+                    </li>
+                </ul>
+            </div>
+
+            <div class="risk-box">
+                <div class="risk-title">
+                    <span>️</span>
+                    Главный риск: Усталость сегмента
+                </div>
+                <div class="risk-description">
+                    3 касания за последние 14 дней. Рекомендуется мониторинг отписок в первые 24 часа.
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-approve" onclick="handleApprove()">Approve</button>
+                <button class="btn btn-edit" onclick="handleEdit()">Edit</button>
+                <button class="btn btn-reject" onclick="handleReject()">Reject</button>
+            </div>
+
+            <div class="footer-note">
+                Время проверки: ~30 сек · Audit ID: #88492-AI · Campaign OS v1.0
+            </div>
+        </div>
+
+        <div class="success-state" id="successState">
+            <div class="success-icon">🚀</div>
+            <h3>Кампания одобрена</h3>
+            <p>Передано в оркестратор. Запуск канарейки через 2 минуты.</p>
+            <div class="audit-info">
+                <strong>Audit ID:</strong> #88492-AI<br>
+                <strong>Время решения:</strong> 28 сек<br>
+                <strong>Статус:</strong> Canary deployment initiated<br>
+                <strong>Next check:</strong> 15 min
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <h3>✏️ Редактировать кампанию</h3>
+            <p>Укажите, что нужно изменить. Кампания вернётся к маркетологу.</p>
+            <textarea id="editReason" placeholder="Опишите необходимые изменения..."></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" onclick="closeEditModal()">Отмена</button>
+                <button class="modal-btn modal-btn-primary" onclick="submitEdit()">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div class="modal-overlay" id="rejectModal">
+        <div class="modal">
+            <h3>🛑 Отклонить кампанию</h3>
+            <p>Причина отклонения обязательна для обучения системы (Anti-autoclick).</p>
+            <textarea id="rejectReason" placeholder="Укажите причину отклонения..."></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" onclick="closeRejectModal()">Отмена</button>
+                <button class="modal-btn modal-btn-primary" onclick="submitReject()">Отклонить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleApprove() {
+            document.getElementById('cardContent').style.display = 'none';
+            document.getElementById('successState').classList.add('active');
+            
+            // Log to console (in real app, this would be an API call)
+            console.log('Campaign approved:', {
+                auditId: '#88492-AI',
+                timestamp: new Date().toISOString(),
+                decisionTime: '28s',
+                status: 'canary_initiated'
+            });
+        }
+
+        function handleEdit() {
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            document.getElementById('editReason').value = '';
+        }
+
+        function submitEdit() {
+            const reason = document.getElementById('editReason').value.trim();
+            
+            if (!reason) {
+                alert('Пожалуйста, опишите необходимые изменения.');
+                return;
+            }
+
+            console.log('Campaign edit requested:', {
+                auditId: '#88492-AI',
+                reason: reason,
+                timestamp: new Date().toISOString()
+            });
+
+            alert('Кампания возвращена на доработку. Причина: ' + reason);
+            closeEditModal();
+        }
+
+        function handleReject() {
+            document.getElementById('rejectModal').classList.add('active');
+        }
+
+        function closeRejectModal() {
+            document.getElementById('rejectModal').classList.remove('active');
+            document.getElementById('rejectReason').value = '';
+        }
+
+        function submitReject() {
+            const reason = document.getElementById('rejectReason').value.trim();
+            
+            if (!reason) {
+                alert('Ошибка: Вы не можете отклонить кампанию без указания причины. Это требование системы (Anti-autoclick).');
+                return;
+            }
+
+            console.log('Campaign rejected:', {
+                auditId: '#88492-AI',
+                reason: reason,
+                timestamp: new Date().toISOString(),
+                action: 'added_to_golden_set'
+            });
+
+            alert('Кампания отклонена. Причина добавлена в Golden Set для обучения Judge.\n\n' + reason);
+            closeRejectModal();
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Close modals on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

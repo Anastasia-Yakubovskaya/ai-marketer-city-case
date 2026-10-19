@@ -1,0 +1,13 @@
+{
+  "script": "autonomy.py",
+  "timestamp": "2026-10-19T11:12:05.933224",
+  "config_hash": "6ef397c416a8ca24",
+  "deterministic": true,
+  "seed_required": false,
+  "tables_written": [
+    "autonomy_thresholds.csv",
+    "autonomy_promotion_oc.csv",
+    "autonomy_sprt_demotion.csv",
+    "autonomy_error_budget.csv"
+  ]
+}

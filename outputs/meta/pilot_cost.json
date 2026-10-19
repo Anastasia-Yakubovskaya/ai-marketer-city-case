@@ -1,0 +1,15 @@
+{
+  "script": "pilot_cost.py",
+  "timestamp": "2026-10-19T11:12:08.400366",
+  "gross": [
+    12.42,
+    13.5,
+    15.66
+  ],
+  "opex": [
+    0.9,
+    1.45,
+    2.1
+  ],
+  "matches_economics_config": true
+}

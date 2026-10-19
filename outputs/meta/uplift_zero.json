@@ -1,0 +1,28 @@
+{
+  "script": "uplift_zero.py",
+  "timestamp": "2026-10-19T11:12:11.658010",
+  "rows": [
+    {
+      "scenario": "conservative",
+      "pilot_gross_p50": 13.795,
+      "loss_if_stopped_at_m6_p10": 12.976,
+      "loss_if_stopped_at_m6_p50": 13.753,
+      "loss_if_stopped_at_m6_p90": 14.779,
+      "prob_payback_36m": 0.0,
+      "npv24_p10": -40.002,
+      "npv24_p50": -34.777,
+      "npv24_p90": -29.884
+    },
+    {
+      "scenario": "base",
+      "pilot_gross_p50": 13.795,
+      "loss_if_stopped_at_m6_p10": 11.566,
+      "loss_if_stopped_at_m6_p50": 12.503,
+      "loss_if_stopped_at_m6_p90": 13.598,
+      "prob_payback_36m": 0.394,
+      "npv24_p10": -21.166,
+      "npv24_p50": -11.606,
+      "npv24_p90": -0.878
+    }
+  ]
+}

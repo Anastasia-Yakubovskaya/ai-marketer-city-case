@@ -1,0 +1,3 @@
+scenario,breakeven_horizon_months,breakeven_delta,note
+conservative,24,0.04594200330734703,"economic planning threshold, not a statistical M6 proof"
+base,24,0.01234200330734703,"economic planning threshold, not a statistical M6 proof"

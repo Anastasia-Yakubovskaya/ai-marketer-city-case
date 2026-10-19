@@ -1,0 +1,5 @@
+coverage_case,scenario,payback_p10,payback_p50,payback_p90,prob_payback_24m,prob_never_within_60m,breakeven_delta_24m
+full_eligible_contour,conservative,10.0,15.0,31.0,0.66394,0.19334,0.04594200330734703
+full_eligible_contour,base,9.0,12.0,21.0,0.90474,0.0318,0.01234200330734703
+50%_eligible_value,conservative,15.0,24.0,44.0,0.27586,0.4689,0.0927173399480274
+50%_eligible_value,base,13.0,21.0,38.0,0.5351,0.18744,0.0591173399480274

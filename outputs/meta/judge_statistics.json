@@ -1,0 +1,12 @@
+{
+  "script": "judge_statistics.py",
+  "timestamp": "2026-10-19T11:11:55.992008",
+  "config_hash": "3537864c380c32ac",
+  "deterministic": true,
+  "seed_required": false,
+  "tables_written": [
+    "evidence",
+    "kappa",
+    "requirements"
+  ]
+}

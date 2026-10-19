@@ -1,0 +1,7 @@
+role,fte,automatable_share,fte_released_full,m_rub_per_month_full,type
+marketer,14.0,0.3,4.2,1.47,ASSUMPTION
+analyst,6.0,0.5,3.0,1.05,ASSUMPTION
+designer,2.0,0.5,1.0,0.35,ASSUMPTION
+editor,2.0,0.5,1.0,0.35,ASSUMPTION
+project_manager,2.0,0.4,0.8,0.28,ASSUMPTION
+manual review scenario (120 x 2 h),1.379,1.0,1.379,0.483,ASSUMPTION

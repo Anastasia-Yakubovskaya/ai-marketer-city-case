@@ -1,0 +1,13 @@
+{
+  "script": "risk_register.py",
+  "timestamp": "2026-10-19T11:12:07.635219",
+  "expert_assumptions": true,
+  "rpn_before": 2469,
+  "rpn_after": 636,
+  "risks": 14,
+  "top_residual": [
+    "R14",
+    "R5",
+    "R9"
+  ]
+}

@@ -1,0 +1,47 @@
+metric,value,unit,type,source,rationale,slides
+campaigns_per_month,120,campaigns/month,CASE_FACT,case,stated in the case,"1,3"
+team_cost_m_rub_per_month,8.4,m RUB/month,CASE_FACT,case,stated in the case,"1,8"
+communication_budget_m_rub_per_month,40.0,m RUB/month,CASE_FACT,case,stated in the case,"1,8"
+launch_days_as_is,9.0,days,CASE_FACT,case,stated in the case,"1,2"
+analysis_days_as_is,5.0,days,CASE_FACT,case,stated in the case,2
+labor_share,17.36,%,DERIVED_FACT,case facts,8.4/(8.4+40),8
+fte_cost_gap,0.6999999999999993,m RUB/month,DERIVED_FACT,reconciliation.csv,26 FTE x 0.35 = 9.1 vs 8.4 stated in the case,17
+one_click_active_review_target,1-2,minutes,PILOT_TARGET,config/assumptions.yaml,active time spent reading the prepared approval card,6
+approval_lead_time_p50_target,0.5,days,PILOT_TARGET,config/assumptions.yaml,queue lead time is measured separately from active review time,"6,11"
+naive_sequential_days_range,11.0-12.0,days,DERIVED_FACT,reconciliation.csv,naive sum of listed steps differs from stated 9-day lead time,14
+launch_time_to_be_p50,1.31,days,MODEL_RESULT,process_model.py,simulation of target process,"1,2,14"
+time_to_evidence_cut_W7,62.7,%,MODEL_RESULT,process_model.py,22.9 -> 8.6 days,"1,2,14"
+time_to_evidence_cut_W14,48.0,%,MODEL_RESULT,process_model.py,29.9 -> 15.6 days,"1,2,14"
+time_to_evidence_cut_W28,32.7,%,MODEL_RESULT,process_model.py,43.9 -> 29.6 days,"1,2,14"
+waiting_share_scenario,40-80%,% of 9-day lead time,ASSUMPTION,config/assumptions.yaml,illustrative decomposition; measure in shadow mode,2
+autonomy_yellow_one_click,59,creatives,MODEL_RESULT,autonomy.py,p_U=0.050; reach 0.20m / 1.59m with canary,6
+autonomy_green_limited,149,creatives,MODEL_RESULT,autonomy.py,p_U=0.020; reach 0.50m / 3.96m with canary,6
+autonomy_green_standard,299,creatives,MODEL_RESULT,autonomy.py,p_U=0.010; reach 1.00m / 7.90m with canary,6
+canary_share_q,0.03,share,ASSUMPTION,config/assumptions.yaml,pilot design assumption,"6,9"
+local_violation_rate_pressure3,20.5,%,MODEL_RESULT,contact_policy.py,synthetic simulation: 20k clients x 5 weeks,"4,16"
+central_value_loss_pressure3,7.4,%,MODEL_RESULT,contact_policy.py,synthetic value loss to enforce policy,"4,16"
+n_campaign_vs_holdout_conversion,8155,clients/arm,MODEL_RESULT,gmv_sample_size.py,conversion proxy; primary metric remains GMV,7
+experiment_control_share,10.0,%,ASSUMPTION,config/assumptions.yaml,control share used inside MDE / individual experiment calculations,7
+persistent_holdout_share,1-2,%,PILOT_TARGET,config/assumptions.yaml,separate long-term holdout for cumulative effect and communication fatigue,7
+n_campaign_vs_holdout_gmv_cv1.0,16789,clients/arm,MODEL_RESULT,gmv_sample_size.py,"GMV primary metric, order-value CV=1.0",7
+n_campaign_vs_holdout_gmv_cv2.0,42691,clients/arm,MODEL_RESULT,gmv_sample_size.py,"GMV primary metric, order-value CV=2.0",7
+n_campaign_vs_holdout_gmv_cv3.0,85859,clients/arm,MODEL_RESULT,gmv_sample_size.py,"GMV primary metric, order-value CV=3.0",7
+n_ai_vs_human_gmv_cv1_margin10pct,1439300,clients/arm,MODEL_RESULT,gmv_sample_size.py,AI vs human non-inferiority on GMV,7
+n_ai_vs_human_gmv_cv1_margin20pct,359825,clients/arm,MODEL_RESULT,gmv_sample_size.py,AI vs human non-inferiority on GMV,7
+n_ai_vs_human_gmv_cv1_margin30pct,159923,clients/arm,MODEL_RESULT,gmv_sample_size.py,AI vs human non-inferiority on GMV,7
+n_ai_vs_human_gmv_cv2_margin10pct,3665020,clients/arm,MODEL_RESULT,gmv_sample_size.py,AI vs human non-inferiority on GMV,7
+n_ai_vs_human_gmv_cv2_margin20pct,916255,clients/arm,MODEL_RESULT,gmv_sample_size.py,AI vs human non-inferiority on GMV,7
+n_ai_vs_human_gmv_cv2_margin30pct,407225,clients/arm,MODEL_RESULT,gmv_sample_size.py,AI vs human non-inferiority on GMV,7
+economic_delta_power_cv0,2939370,clients/arm with CUPED,MODEL_RESULT,gmv_sample_size.py,sample needed to statistically resolve 4.6% growth of incremental effect; too large for M6 pilot,"7,11,12"
+economic_delta_power_cv1,6067126,clients/arm with CUPED,MODEL_RESULT,gmv_sample_size.py,sample needed to statistically resolve 4.6% growth of incremental effect; too large for M6 pilot,"7,11,12"
+economic_delta_power_cv2,15450395,clients/arm with CUPED,MODEL_RESULT,gmv_sample_size.py,sample needed to statistically resolve 4.6% growth of incremental effect; too large for M6 pilot,"7,11,12"
+payback_p50_conservative_full_eligible,15.0,months,MODEL_RESULT,economics.py,full eligible contour; P(<=24m)=0.664; break-even=0.0459,"8,17"
+payback_p50_base_full_eligible,12.0,months,MODEL_RESULT,economics.py,full eligible contour; P(<=24m)=0.905; break-even=0.0123,"8,17"
+payback_p50_conservative_50pct_eligible,24.0,months,MODEL_RESULT,economics.py,P(<=24m)=0.276; break-even=0.0927,"8,17"
+pilot_gross_cash_cost,13.5,m RUB,MODEL_RESULT,pilot_cost.py,range 12.42-15.66,"1,8,10,12,17"
+judge_recall_model_minimum,84.4,%,MODEL_RESULT,judge_target.py,model-derived minimum under assumed error taxonomy,"5,15"
+judge_recall_operational_target,85,%,PILOT_TARGET,pilot decision,rounded operating threshold above model minimum,"5,9,11,12"
+launch_blended_p50_with_legal_queue,1.75,days,MODEL_RESULT,legal_queue.py,"50/50 split is an assumption, not an organizer fact","1,2,14"
+manual_review_scenario_fte,1.38,FTE,ASSUMPTION,capacity_budget.py,120 campaigns x assumed 2h / 174h; validate in shadow mode,"3,17"
+loss_if_uplift_zero_stopped_m6_conservative_p50,13.8,m RUB,MODEL_RESULT,uplift_zero.py,stop after pilot if economic effect is absent,"8,12"
+fmea_risk_count,14,risks,ASSUMPTION,risk_register.py,expert ranking only; S/O/D are not measured probabilities,"9,18"

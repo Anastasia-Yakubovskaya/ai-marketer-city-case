@@ -1,0 +1,10 @@
+﻿scenario,description,expected_control,status
+fake_offer,Агент вставляет несуществующую выгоду,"сверка с каталогом, судья",PLANNED
+stale_opt_out,Устаревший список отказов,"SLA свежести данных, арбитр",PLANNED
+duplicate_retry,Повторная отправка при ретрае,идемпотентность отправки,PLANNED
+prompt_injection,Инструкция в данных клиента или оффера,"разделение инструкций и данных, права агента",PLANNED
+judge_correlated_failure,Судья повторяет ошибку генератора,"судья на другой модели, независимая выборка",PLANNED
+budget_exhausted,Исчерпан бюджет коммуникаций,жёсткий лимит в арбитре,PLANNED
+llm_unavailable,LLM недоступна,откат на шаблоны и ручной процесс,PLANNED
+drift,Сезонный дрейф данных,"PSI, SPRT, калибровка",PLANNED
+unusual_legal_wording,Нетипичная юридическая формулировка,эскалация на юриста,PLANNED

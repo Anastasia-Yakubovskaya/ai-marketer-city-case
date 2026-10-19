@@ -1,0 +1,30 @@
+{
+  "script": "legal_queue.py",
+  "timestamp": "2026-10-19T11:11:52.221425",
+  "rows": [
+    {
+      "group": "template (pre-approved)",
+      "launch_p10": 1.114,
+      "launch_p50": 1.308,
+      "launch_p90": 1.516,
+      "time_to_evidence_p50_w14": 15.557,
+      "time_to_evidence_p90_w14": 15.799
+    },
+    {
+      "group": "new (legal queue)",
+      "launch_p10": 2.136,
+      "launch_p50": 2.741,
+      "launch_p90": 3.617,
+      "time_to_evidence_p50_w14": 16.991,
+      "time_to_evidence_p90_w14": 17.874
+    },
+    {
+      "group": "blended",
+      "launch_p10": 1.178,
+      "launch_p50": 1.746,
+      "launch_p90": 3.328,
+      "time_to_evidence_p50_w14": 16.022,
+      "time_to_evidence_p90_w14": 17.582
+    }
+  ]
+}

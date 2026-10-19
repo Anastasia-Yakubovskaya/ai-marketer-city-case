@@ -1,0 +1,13 @@
+{
+  "script": "judge_target.py",
+  "timestamp": "2026-10-19T11:11:58.399370",
+  "recommended": {
+    "agent_raw_error_factor": 1.5,
+    "eligibility_recall": 0.95,
+    "target": 0.015
+  },
+  "required_judge_recall_recommended": 0.844,
+  "today_high_severity_post_launch_rate": 0.01125,
+  "residual_high_severity_recommended": 0.00375,
+  "taxonomy_status": "ASSUMPTION until validated on real incident data"
+}

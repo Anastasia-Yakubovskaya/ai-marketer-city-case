@@ -1,0 +1,2 @@
+check,observed_treatment,observed_control,expected_treatment,expected_control,chi2,p_value,threshold,status
+randomization_srm,50032,49968,50000.0,50000.0,0.04096,0.8396151519234458,0.001,pass

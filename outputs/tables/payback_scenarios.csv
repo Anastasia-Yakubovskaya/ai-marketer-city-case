@@ -1,0 +1,3 @@
+scenario,payback_p10,payback_p50,payback_p90,prob_payback_24m,prob_payback_36m,prob_never_within_horizon
+conservative,10.0,15.0,31.0,0.66394,0.75758,0.19334
+base,9.0,12.0,21.0,0.90474,0.94912,0.0318

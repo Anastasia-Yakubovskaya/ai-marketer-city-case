@@ -1,0 +1,9 @@
+{
+  "script": "economics.py",
+  "timestamp": "2026-10-19T11:12:10.848280",
+  "config_hash": "b5f6a3330f7dc34b",
+  "seed": 42,
+  "n_simulations": 50000,
+  "horizon_months": 60,
+  "coverage_interpretation": "100% means the full eligible post-pilot contour, not all campaign types"
+}

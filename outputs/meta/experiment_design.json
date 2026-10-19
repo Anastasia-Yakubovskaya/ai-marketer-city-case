@@ -1,0 +1,10 @@
+{
+  "script": "experiment_design.py",
+  "timestamp": "2026-10-19T11:11:53.689670",
+  "config_hash": "0ba03ed595ad63d2",
+  "tables_written": [
+    "experiment_sample_size.csv",
+    "mde_by_audience.csv",
+    "srm_example.csv"
+  ]
+}

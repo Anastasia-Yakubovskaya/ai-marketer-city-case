@@ -1,0 +1,10 @@
+{
+  "script": "contact_policy.py",
+  "timestamp": "2026-10-19T11:12:04.599430",
+  "config_hash": "2890165391828dfc",
+  "seed": 42,
+  "n_clients": 20000,
+  "n_weeks": 5,
+  "pressure_levels": 6,
+  "rows": 12
+}

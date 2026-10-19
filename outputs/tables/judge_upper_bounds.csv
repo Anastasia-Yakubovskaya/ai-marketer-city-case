@@ -1,0 +1,6 @@
+n_clean_zero_misses,unit_of_observation,confidence_level,upper_miss_rate,lower_recall_bound,note
+25,creative,0.95,0.11292814500684323,0.8870718549931568,"upper bound, not a point estimate; independence assumed"
+50,creative,0.95,0.058155079116972264,0.9418449208830277,"upper bound, not a point estimate; independence assumed"
+100,creative,0.95,0.029513049607039932,0.9704869503929601,"upper bound, not a point estimate; independence assumed"
+149,creative,0.95,0.019904816220685073,0.9800951837793149,"upper bound, not a point estimate; independence assumed"
+299,creative,0.95,0.009969146792899286,0.9900308532071007,"upper bound, not a point estimate; independence assumed"

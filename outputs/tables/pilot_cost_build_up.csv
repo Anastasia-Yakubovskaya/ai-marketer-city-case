@@ -1,0 +1,6 @@
+component,low,mode,high,type_and_comment
+team: 5 FTE x 0.35 x 6 months,10.5,10.5,10.5,case average FTE rate used as proxy
+infrastructure and inference (total),1.0,2.0,4.0,ASSUMPTION: confirm internal chargeback
+contingency 8% of team + infrastructure,0.92,1.0,1.16,ASSUMPTION
+PILOT GROSS CASH COST,12.42,13.5,15.66,sum
+post-pilot run cost per month,0.9,1.45,2.1,ASSUMPTION: 2-4 FTE + infra + annotation

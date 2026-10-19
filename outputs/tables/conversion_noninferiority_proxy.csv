@@ -1,0 +1,2 @@
+comparison,human_conversion,expected_ai_conversion,noninferiority_margin_absolute,alpha_one_sided,power,n_per_arm
+ai_vs_human_noninferiority,0.06,0.06,0.003,0.05,0.8,77489

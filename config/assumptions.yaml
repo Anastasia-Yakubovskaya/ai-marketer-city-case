@@ -1,0 +1,385 @@
+# LEGEND:
+#   SRC   : CASE        — условие кейса
+#           ASSUMPTION  — наше допущение с диапазоном, проверяется в пилоте
+#           DERIVED     — арифметика/формула над подтверждёнными входами
+#           TARGET      — цель пилота, не измерение
+#           DESIGN      — проектное решение архитектуры/процесса
+#           CONVENTION  — отраслевой стандарт
+#           METHOD      — статистический метод
+#   SENS  : low / med / high — влияние на окупаемость и выводы
+#   USE   : файл расчёта и слайд, где число появляется
+
+# FACTS: условия кейса 
+case_facts:
+  campaigns_per_month: 120                 # SRC: CASE · SENS: high
+  team_cost_m_rub_per_month: 8.4           # SRC: CASE · SENS: med; конфликт с 26×0,35=9,1 см. reconciliation
+  communication_budget_m_rub_per_month: 40.0  # SRC: CASE · SENS: high
+  launch_days_as_is: 9.0                   # SRC: CASE · SENS: high
+  analysis_days_as_is: 5.0                 # SRC: CASE · SENS: low
+  avg_order_lift_vs_control_rel: 0.2       # SRC: CASE · SENS: high
+  prelaunch_error_rate: 0.08               # SRC: CASE · SENS: med
+  postlaunch_error_rate: 0.015             # SRC: CASE · SENS: high
+  messages_per_week: 4                     # SRC: CASE (контактная политика) · SENS: high
+  sms_per_week: 1                          # SRC: CASE (контактная политика) · SENS: med
+  push_cost_rub: 0.1                       # SRC: CASE · SENS: low
+  email_cost_rub: 0.5                      # SRC: CASE · SENS: low
+  sms_cost_rub: 9.0                        # SRC: CASE · SENS: med
+
+# PROCESS: Monte Carlo срока 
+process_model:
+  one_click_active_review_minutes: [1, 2]  # TARGET: активное время просмотра карточки человеком
+  approval_lead_time_p50_target_days: 0.5  # TARGET: очередь/ожидание подтверждения, не active work
+  n_simulations: 50000                     # SRC: CONVENTION · SENS: low; ошибка MC ~1/√n
+  observation_windows_days:                # ASSUMPTION: окна чувствительности 7/14/28 дней
+    - 7
+    - 14
+    - 28
+  analysis_as_is_days:                     # SRC: CASE mode=5; low/high ASSUMPTION · SENS: med
+    - 3.0
+    - 5.0
+    - 7.0
+  analysis_to_be_days:                     # SRC: TARGET/DESIGN · SENS: med; валидация M3
+    - 0.05
+    - 0.2
+    - 0.5
+
+  as_is:                                   # mode = длительность шага из кейса; low/high = ASSUMPTION ±
+    hypothesis:
+      days: [0.8, 1.0, 1.8]                # CASE mode=1 («от 1 дня»)
+      depends_on: []
+    preanalysis:
+      days: [1.5, 2.0, 3.0]                # CASE mode=2
+      depends_on: [hypothesis]
+    segment:
+      days: [0.7, 1.0, 1.5]                # CASE mode=1
+      depends_on: [preanalysis]
+    offer_scenario:
+      days: [0.8, 1.3, 2.0]                # CASE 1–2, mode=1,3 ASSUMPTION
+      depends_on: [preanalysis]
+    creative:
+      days: [1.3, 2.0, 3.0]                # CASE mode=2
+      depends_on: [offer_scenario]
+    approval:
+      days: [0.5, 1.0, 1.8]                # CASE mode=1
+      depends_on: [segment, creative]
+    launch_setup:
+      days: [2.0, 3.0, 4.0]                # CASE mode=3
+      depends_on: [approval]
+
+  to_be:                                   # SRC: TARGET/DESIGN · SENS: high; валидация M3
+    intake:
+      days: [0.05, 0.15, 0.35]
+      depends_on: []
+    audience_uplift:
+      days: [0.1, 0.25, 0.6]
+      depends_on: [intake]
+    offer_creative:
+      days: [0.05, 0.2, 0.5]
+      depends_on: [intake]
+    safety_checks:
+      days: [0.15, 0.25, 0.45]
+      depends_on: [audience_uplift, offer_creative]
+    human_one_click:
+      days: [0.05, 0.1, 0.2]               # lead time этапа в модели; active review отдельно 1–2 мин
+      depends_on: [safety_checks]
+    canary_launch:
+      days: [0.2, 0.35, 0.6]
+      depends_on: [human_one_click]
+
+# PORTFOLIO: иллюстративный скоринг 
+portfolio:
+  weights:                                 # SRC: ASSUMPTION-иллюстрация · SENS: low
+    value: 0.3                             #   заменить реальной структурой 120 кампаний после ответа организаторов
+    repeatability: 0.2
+    data_readiness: 0.2
+    automation_readiness: 0.2
+    risk_penalty: 0.1
+
+  thresholds:                              # SRC: DESIGN · SENS: low
+    pilot_first_min_score: 0.72
+    second_wave_min_score: 0.50
+    pilot_first_max_risk: 2
+    second_wave_max_risk: 4
+
+# ERROR BUDGET: канонический блок
+error_budget:                              # CANONICAL: используется safety/error_budget.py
+  monthly_budget_points: 100.0             # SRC: DESIGN · SENS: med
+  severity_weights:                        # SRC: DESIGN (шкала тяжести) · SENS: med
+    low: 1.0
+    medium: 5.0
+    high: 20.0
+    critical: 100.0
+  burn_thresholds:                         # SRC: DESIGN · SENS: med
+    normal_max: 0.5                        #   ≥0,5 — внимание
+    freeze_max: 0.8                        #   ≥0,8 — заморозка тира
+    reduce_max: 1.0                        #   ≥1,0 — понижение автономности
+
+# RECONCILIATION: противоречия входа 
+reconciliation:
+  team_fte: 26                             # SRC: CASE · SENS: med
+  fte_cost_m_rub_per_month: 0.35           # SRC: CASE · SENS: med
+  reported_team_cost_m_rub_per_month: 8.4  # SRC: CASE · SENS: med; 26×0,35=9,1 — альтернатива
+  reported_launch_days: 9.0                # SRC: CASE · SENS: high
+  case_step_days:                          # SRC: CASE (7 шагов) · SENS: med
+    hypothesis:
+    - 1.0                                  #   min/mode/max: кейс даёт точку, разброс = ASSUMPTION 0
+    - 1.0
+    - 1.0
+    preanalysis:
+    - 2.0                                  #   CASE: 2 дня
+    - 2.0
+    - 2.0
+    segment_control:
+    - 1.0                                  #   CASE: 1 день
+    - 1.0
+    - 1.0
+    offer_channel_scenario:
+    - 1.0                                  #   CASE: 1–2 дня, mode=1,5 ASSUMPTION
+    - 1.5
+    - 2.0
+    creatives:
+    - 2.0                                  #   CASE: 2 дня
+    - 2.0
+    - 2.0
+    approval:
+    - 1.0                                  #   CASE: 1 день
+    - 1.0
+    - 1.0
+    launch_setup:
+    - 3.0                                  #   CASE: 3 дня
+    - 3.0
+    - 3.0
+
+# JUDGE: статистика 
+judge_statistics:
+  confidence_level: 0.95                   # SRC: CONVENTION · SENS: low
+  target_recalls:                          # SRC: DESIGN (лестница тиров) · SENS: med
+  - 0.95
+  - 0.98
+  - 0.99
+  example_clean_sample_sizes:              # SRC: DERIVED (Clopper–Pearson, k=0)
+  - 25
+  - 50
+  - 100
+  - 149
+  - 299
+unit_of_observation: creative              # SRC: DESIGN; используется safety/judge_statistics.py
+
+# EXPERIMENT: выборки и допуски 
+experiment_design:
+  alpha: 0.05                              # SRC: CONVENTION · SENS: low
+  power: 0.8                               # SRC: CONVENTION · SENS: med
+  baseline_conversion: 0.05                # SRC: ASSUMPTION (базовая конверсия 5%; проверить на реальных данных) · SENS: med
+  relative_lift: 0.2                       # SRC: CASE · SENS: high
+  cuped_rho_squared: 0.3                   # SRC: ASSUMPTION (метод CUPED, Deng 2013) · SENS: med
+  audience_sizes:                          # SRC: DESIGN-сетка · SENS: low
+  - 20000
+  - 30000
+  - 50000
+  - 100000
+  holdout_share: 0.1                       # доля контроля внутри отдельного эксперимента / MDE
+  persistent_holdout_share: [0.01, 0.02]   # долгосрочный holdout для cumulative effect и fatigue; не используется в MDE
+  noninferiority:
+    human_conversion: 0.06                 # SRC: ASSUMPTION · SENS: med
+    expected_ai_conversion: 0.06           # SRC: ASSUMPTION (H1: равны) · SENS: med
+    margin_absolute: 0.003                 # SRC: ASSUMPTION-решение владельца (≈30% эффекта) · SENS: high
+    alpha_one_sided: 0.05                  # SRC: CONVENTION · SENS: low
+    power: 0.8                             # SRC: CONVENTION · SENS: low
+
+# CONTACT POLICY: симуляция арбитра 
+contact_policy_model:
+  n_clients: 20000                         # SRC: ASSUMPTION (размер синтетики) · SENS: low
+  n_weeks: 5                               # SRC: ASSUMPTION · SENS: low
+  weekly_campaign_pressure_grid:           # SRC: DESIGN-сетка · SENS: med
+  - 1.0
+  - 2.0
+  - 3.0
+  - 4.0
+  - 5.0
+  - 6.0
+  message_cap_per_week: 4                  # SRC: CASE · SENS: high
+  sms_cap_per_week: 1                      # SRC: CASE · SENS: med
+  sms_share: 0.15                          # SRC: ASSUMPTION синтетики · SENS: low
+  optout_share: 0.08                       # SRC: ASSUMPTION синтетики · SENS: low
+  value_distribution:                      # SRC: ASSUMPTION ценности сообщения · SENS: med
+    low: 0.0
+    mode: 1.0
+    high: 3.0
+  central_arbiter_objective: maximize_message_value_under_constraints  # SRC: DESIGN; в бою = добавочная маржа − стоимость канала
+
+# ECONOMICS
+economics:
+  n_simulations: 50000                     # SRC: CONVENTION · SENS: low
+  horizon_months: 60                       # SRC: DESIGN · SENS: low
+  breakeven_horizon_months: 24             # SRC: DESIGN · SENS: med
+  labor_cost_m_rub_per_month: 8.4          # SRC: CASE · SENS: med; альтернатива 9,1 — sensitivity
+  communication_budget_m_rub_per_month: 40.0  # SRC: CASE · SENS: high
+  labor_share_removed: [0.2, 0.4, 0.6]     # ASSUMPTION: доля высвобождаемой ёмкости
+  capacity_monetization: [0.3, 0.6, 0.9]   # SRC: ASSUMPTION (решение руководства) · SENS: med
+  roi0: [0.8, 1.5, 3.0]                    # SRC: ASSUMPTION (маржа на ₽ коммуникаций) · SENS: high; валидация M4–M5
+  delta: [-0.02, 0.05, 0.15]               # SRC: ASSUMPTION-приор · SENS: high (драйвер №1)
+  pilot_cost: [12.42, 13.5, 15.66]         # SRC: DERIVED (economics/pilot_cost.py: 10,5 команда + infra + 8%) · SENS: med
+  post_pilot_opex: [0.9, 1.45, 2.1]        # SRC: ASSUMPTION, mode=1,45 как на слайде 8 · SENS: med
+  error_benefit: [0.0, 0.05, 0.15]         # SRC: ASSUMPTION (пренебрежимо мал) · SENS: low
+  discount_rate_annual: 0.15               # SRC: ASSUMPTION-калибровка (hurdle-rate банка) · SENS: med
+  max_coverage_share: 1.0                  # 100% = полный eligible-контур после масштабирования, не все кампании банка
+  coverage_sensitivity_share: 0.5            # sensitivity: только 50% eligible-ценности адресуемо
+  coverage_ramp:                           # SRC: DESIGN, привязан к гейтам M1–M6 · SENS: med
+    1: 0.0
+    2: 0.0
+    3: 0.05
+    4: 0.10
+    5: 0.18
+    6: 0.30
+    7: 0.38
+    8: 0.45
+    9: 0.52
+    10: 0.58
+    11: 0.63
+    12: 0.68
+
+# AUTONOMY 
+autonomy_rule:
+  confidence_level: 0.95                   # SRC: CONVENTION · SENS: low
+
+  tiers:                                   # SRC: DESIGN (лестница) · SENS: med
+    yellow_one_click:
+      target_recall: 0.95
+      description: "AI prepares campaign, human confirms one-click. Low-risk standard push/in-app."
+    green_limited:
+      target_recall: 0.98
+      description: "Expanded eligible reach after canary; human still confirms prod-send in pilot."
+    green_standard:
+      target_recall: 0.99
+      description: "Standard Green tier for repeatable campaigns; human still confirms prod-send in pilot."
+
+  damage_per_contact_rub: 1.0              # SRC: ASSUMPTION · SENS: med
+  max_expected_damage_rub: 10000.0         # SRC: ASSUMPTION (риск-бюджет периода) · SENS: med
+
+  canary_share: 0.03                       # SRC: DESIGN · SENS: med
+  canary_detection_prob: 0.90              # SRC: ASSUMPTION · SENS: med
+
+  true_error_rate_grid:                    # SRC: DESIGN-сетка OC-кривых
+    - 0.001
+    - 0.005
+    - 0.01
+    - 0.02
+    - 0.05
+    - 0.08
+    - 0.10
+
+  sprt:                                    # SRC: METHOD (Wald, 1945); p0/p1 = DESIGN · SENS: low
+    p0: 0.01
+    p1: 0.05
+    alpha: 0.05
+    beta: 0.10
+
+  error_budget:                            # ALIAS: синхронизировать с каноническим блоком error_budget выше
+    monthly_budget_points: 100.0
+    severity_weights:
+      low: 1.0
+      medium: 5.0
+      high: 20.0
+      critical: 100.0
+    burn_thresholds:
+      normal_max: 0.5
+      freeze_max: 0.8
+      reduce_max: 1.0
+
+# JUDGE BENCHMARK: синтетический корпус 
+judge_benchmark:
+  n_clean: 855                             # SRC: DESIGN (размер синтетического корпуса, seed 42) · SENS: low
+  class_counts:                            # SRC: DESIGN (распределение классов в корпусе) · SENS: low
+    wrong_discount: 60
+    wrong_date: 60
+    wrong_min: 50
+    missing_condition: 60
+    invented_offer: 100
+    ty_form: 70
+    pressure: 100
+    promise: 70
+    typo: 60
+    spacing: 15
+  required_cascade_recall: 0.98            # SRC: TARGET (каскад код+судья) · SENS: med
+
+#  PILOT COST: build-up по ставке кейса 
+pilot_cost_bottom_up:
+  team_fte: 5                              # SRC: CASE (команда 5) · SENS: low
+  fte_cost_m_rub_per_month: 0.35           # CASE: средняя ставка FTE; для ролей пилота используется как proxy
+  months: 6                                # SRC: CASE (пилот 6 мес) · SENS: low
+  infra_inference_total_m_rub: [1.0, 2.0, 4.0]  # SRC: ASSUMPTION (внутренняя LLM/chargeback неизвестны) · SENS: med
+  contingency_share: 0.08                  # SRC: ASSUMPTION (резерв) · SENS: low
+  post_pilot:                              # SRC: ASSUMPTION · SENS: med
+    team_fte: [2, 3, 4]                    #   содержание и развитие после пилота
+    infra_m_rub_per_month: [0.1, 0.2, 0.4]
+    annotation_m_rub_per_month: [0.1, 0.2, 0.3]
+
+# GMV: выборки под выручку 
+gmv:
+  baseline_conversion: 0.05                # SRC: ASSUMPTION (базовая конверсия 5%; проверить на реальных данных) · SENS: med
+  relative_lift: 0.2                       # SRC: CASE · SENS: high
+  order_value_cv: [1.0, 2.0, 3.0]          # SRC: ASSUMPTION (вариация чека неизвестна) · SENS: high
+  cuped_rho_squared: 0.3                   # SRC: ASSUMPTION (CUPED, Deng 2013) · SENS: med
+  human_conversion: 0.06                   # SRC: ASSUMPTION · SENS: med
+  noninferiority_margin_share_of_effect: [0.1, 0.2, 0.3]  # SRC: DESIGN-сетка допусков · SENS: high
+  alpha: 0.05                              # SRC: CONVENTION · SENS: low
+  power: 0.8                               # SRC: CONVENTION · SENS: low
+
+# JUDGE TARGET: вывод цели 84%
+judge_target:
+  pre_launch_share:                        # ASSUMPTION: рабочая таксономия ошибок
+    typos_tone: 0.50
+    text_vs_conditions: 0.25
+    contact_policy: 0.15
+    wrong_segment: 0.10
+    offer_unavailable: 0.0
+  post_launch_share:                       # ASSUMPTION: рабочая таксономия ошибок
+    typos_tone: 0.10
+    text_vs_conditions: 0.05
+    contact_policy: 0.10
+    wrong_segment: 0.15
+    offer_unavailable: 0.60
+  severity:                                # ASSUMPTION: рабочая тяжесть классов
+    typos_tone: low
+    text_vs_conditions: medium
+    contact_policy: medium
+    wrong_segment: high
+    offer_unavailable: high
+  agent_raw_error_factor: [1.0, 1.5]       # SRC: ASSUMPTION · SENS: high; ×1.5 → цель 84%
+  control_recall:                          # SRC: ASSUMPTION (охват контролей не-судьи) · SENS: med
+    contact_policy: 1.0                    #   центральный арбитр, по построению
+    offer_unavailable: [0.90, 0.95, 0.99]  #   eligibility engine
+    text_vs_conditions: 0.95               #   условия из каталога + сверка кодом
+    wrong_segment: 0.80                    #   проверки сегмента + человек для новизны
+  targets_post_launch_error_rate: [0.015, 0.011, 0.0075]  # SRC: DERIVED; parity, -25%, -50% от текущих 1,5%
+  recommended:                             # SRC: DERIVED (safety/judge_target.py)
+    agent_raw_error_factor: 1.5
+    eligibility_recall: 0.95
+    target: 0.015
+
+# LEGAL QUEUE: очередь юриста 
+legal_queue:
+  new_campaign_share: 0.5                  # ASSUMPTION: sensitivity 50/50 новых и шаблонных
+  queue_days: [0.5, 1.0, 3.0]              # SRC: ASSUMPTION · SENS: med; валидация M2
+  observation_window_days: 14              # ASSUMPTION: основное окно для sensitivity
+
+# CAPACITY BRIDGE: ёмкость и роли
+capacity_bridge:
+  hours_per_fte_month: 174                 # SRC: CONVENTION (174 ч/мес = 1 FTE) · SENS: low
+  review_hours_per_campaign: 2.0           # ASSUMPTION: проверить shadow-замером; 120×2ч ≈1,4 FTE
+  roles:                                   # SRC: CASE (штат) · SENS: med; automatable_share = ASSUMPTION
+    marketer: {fte: 14, automatable_share: 0.30}
+    analyst: {fte: 6, automatable_share: 0.50}
+    designer: {fte: 2, automatable_share: 0.50}
+    editor: {fte: 2, automatable_share: 0.50}
+    project_manager: {fte: 2, automatable_share: 0.40}
+
+# ADDRESSABLE BUDGET: проверка «65% в push» 
+addressable_budget:
+  claimed_share_of_budget: 0.65            # SRC: ASSUMPTION (claim на слайде, нужно проверить) · SENS: med
+  template_campaign_share: 0.5             # ASSUMPTION: сценарий 50% шаблонных кампаний
+  reachable_clients_options_m: [4, 12]     # SRC: ASSUMPTION (сценарии базы) · SENS: med
+
+# UPLIFT ZERO: сценарий провала
+uplift_zero:
+  scenarios: [conservative, base]          # SRC: DESIGN · SENS: high; потеря ≈13,8/12,5 млн при остановке в M6

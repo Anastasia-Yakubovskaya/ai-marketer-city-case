@@ -1,0 +1,10 @@
+{
+  "script": "capacity_budget.py",
+  "timestamp": "2026-10-19T11:12:09.243744",
+  "assumed_fte_released_full": 10.0,
+  "assumed_m_rub_full": 3.500000000000001,
+  "review_scenario_fte": 1.3793103448275863,
+  "push_absorbs_share_4m": 0.173,
+  "push_absorbs_share_12m": 0.52,
+  "claim_65pct_feasible": false
+}

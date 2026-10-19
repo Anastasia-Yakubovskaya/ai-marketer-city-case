@@ -1,0 +1,4 @@
+target_recall,max_miss_rate,confidence_level,required_zero_miss_examples,achieved_upper_miss_rate,unit_of_observation
+0.95,0.050000000000000044,0.95,59,0.04950760988822689,creative
+0.98,0.020000000000000018,0.95,149,0.019904816220685073,creative
+0.99,0.010000000000000009,0.95,299,0.009969146792899286,creative

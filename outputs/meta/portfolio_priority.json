@@ -1,0 +1,14 @@
+{
+  "script": "portfolio.py",
+  "timestamp": "2026-10-19T11:12:12.395521",
+  "config_path": "config/assumptions.yaml",
+  "data_path": "data/processed/campaign_portfolio_assumptions.csv",
+  "config_hash": "668fef29988aae36",
+  "data_hash": "4f9fb78508398a26",
+  "rows": 10,
+  "wave_counts": {
+    "PILOT_FIRST": 2,
+    "SECOND_WAVE": 3,
+    "HUMAN_FIRST": 5
+  }
+}

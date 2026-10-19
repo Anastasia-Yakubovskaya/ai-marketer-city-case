@@ -1,0 +1,11 @@
+campaign_id,service,channel,offer_class,description,value,repeatability,data_readiness,automation_readiness,risk
+C01,Delivery,push,repeat_order,Repeat purchase push for active delivery users,5,5,5,5,1
+C02,City services,in_app,cross_sell,Cross-sell in-app banner for related City services,4,4,4,4,2
+C03,Telecom,email,winback,Email win-back for recently churned telecom users,4,3,4,3,2
+C04,Retail,sms,promo,SMS promo with discount for retail partners,4,3,4,2,4
+C05,New partner,any,new_offer,New partner offer with custom legal terms,5,2,2,2,5
+C06,Brand,in_app,special_project,Special brand project with creative review,3,1,2,1,5
+C07,Delivery,push,time_sensitive,Time-sensitive delivery reminder near user location,4,3,3,3,3
+C08,Finance,push,personalized_recommendation,Personalized recommendation push based on uplift score,5,4,4,4,2
+C09,Utilities,in_app,education,Education in-app message for utility bill payment,3,4,3,4,1
+C10,Dormant,sms,reactivation,SMS reactivation for dormant high-value users,3,2,3,2,4

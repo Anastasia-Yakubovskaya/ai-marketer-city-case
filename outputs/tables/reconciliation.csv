@@ -1,0 +1,5 @@
+check,reported_value,calculated_value,unit,absolute_gap,relative_gap,status,interpretation
+team_cost,8.4,9.1,m RUB/month,0.6999999999999993,0.08333333333333326,MISMATCH,"26 FTE x 0.35 = 9.10, while the case reports 8.4. Gap 0.70 m RUB/month is named explicitly as a reconciliation item."
+launch_duration_lower_bound,9.0,11.0,working days,2.0,0.22222222222222232,MISMATCH,Sum of minimum step durations (11.0 days) exceeds the stated 9 days; some steps must overlap or sit outside the measured lead time.
+launch_duration_mode_sum,9.0,11.5,working days,2.5,0.2777777777777777,MISMATCH,Naive sequential summation of mode durations (11.5 days) is not a valid reconstruction of the 9-day process; parallelism is modeled in process/process_model.py.
+launch_duration_upper_bound,9.0,12.0,working days,3.0,0.33333333333333326,MISMATCH,Upper-end sequential duration (12.0 days) quantifies the maximum inconsistency before modeling parallelism.

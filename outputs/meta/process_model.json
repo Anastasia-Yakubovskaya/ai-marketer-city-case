@@ -1,0 +1,8 @@
+{
+  "script": "process_model.py",
+  "timestamp": "2026-10-19T11:11:51.413133",
+  "config_hash": "f39bb18e90fe6e3f",
+  "seed": 42,
+  "n_simulations": 50000,
+  "rows": 8
+}

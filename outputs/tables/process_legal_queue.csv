@@ -1,0 +1,4 @@
+group,launch_p10,launch_p50,launch_p90,time_to_evidence_p50_w14,time_to_evidence_p90_w14
+template (pre-approved),1.114,1.308,1.516,15.557,15.799
+new (legal queue),2.136,2.741,3.617,16.991,17.874
+blended,1.178,1.746,3.328,16.022,17.582

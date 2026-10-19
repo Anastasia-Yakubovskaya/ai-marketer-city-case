@@ -1,0 +1,10 @@
+{
+  "script": "judge_benchmark.py",
+  "timestamp": "2026-10-19T11:11:57.410159",
+  "seed": 42,
+  "synthetic": true,
+  "n_messages": 1500,
+  "s3_rules_recall": 0.8454545454545455,
+  "llm_residual_recall_required_if_independent": 0.8705882352941176,
+  "config_hash": "eabbe2f3052fd1c4"
+}

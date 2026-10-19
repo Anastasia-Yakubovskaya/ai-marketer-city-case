@@ -1,0 +1,9 @@
+scenario,incident_count,used_points,budget_points,burn_rate,critical_incident,action
+one_critical_large,1,1000.0,100.0,10.0,True,STOP_AND_DEMOTE
+two_high_one_critical,3,124.0,100.0,1.24,True,STOP_AND_DEMOTE
+one_critical_small,1,50.0,100.0,0.5,True,STOP_AND_DEMOTE
+one_high,1,40.0,100.0,0.4,False,NORMAL
+mixed_escalating,4,37.3,100.0,0.373,False,NORMAL
+one_medium,1,2.5,100.0,0.025,False,NORMAL
+few_low_small,3,0.65,100.0,0.006500000000000001,False,NORMAL
+clean_month,0,0.0,100.0,0.0,False,NORMAL
