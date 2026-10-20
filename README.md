@@ -61,10 +61,7 @@ ai-marketer-city-case/
 ├── run_all.py
 ├── report.pdf
 ├── report_with_appendix.pdf
-├── report.pptx
-├── report_with_appendix.pptx
-├── Pilot-Charter-Campaign-OS-FINAL.pdf
-├── Pilot-Charter-Campaign-OS-FINAL.html
+├── pilot.pdf
 │
 ├── config/
 │   ├── assumptions.yaml
